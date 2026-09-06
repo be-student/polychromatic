@@ -69,3 +69,15 @@ ninja -C build install
 
 [Meson]: https://mesonbuild.com/
 [Ninja]: https://ninja-build.org/
+
+## Backend import diagnostics
+
+Backend discovery distinguishes an absent backend library from a broken import
+inside an installed library. Only a `ModuleNotFoundError` naming the requested
+module or one of its parents means it is absent. Missing dependencies, missing
+symbols, and errors without a module name remain import errors so the interface
+can display the original exception. Backend discovery and the troubleshooter use
+`common.is_missing_module` to keep this distinction consistent.
+
+The import classification regressions run with `./tests/run.sh --verbose` and do
+not require devices or a running OpenRazer daemon.
